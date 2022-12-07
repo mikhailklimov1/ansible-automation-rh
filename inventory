@@ -1,0 +1,10 @@
+[servers]
+ansible1
+ansible2
+
+#[new_servers]
+#ansible3
+#ansible4
+
+[servers:vars]
+ansible_user=ansible
