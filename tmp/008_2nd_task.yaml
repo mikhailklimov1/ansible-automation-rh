@@ -1,0 +1,13 @@
+---
+- name: Install packages
+  hosts: ansible1
+  tasks:
+    - name: Install all required packages
+      yum:
+        name:
+          - firewalld
+          - httpd
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest

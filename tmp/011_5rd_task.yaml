@@ -1,0 +1,8 @@
+---
+- name: Get file from URL and place it into /var/www/html
+  hosts: ansible1
+  tasks:
+    - name: Get URL and copy it into folder /var/www/html
+      get_url:
+        url: http://ansible2.example.com
+        dest: /var/www/html/index.html

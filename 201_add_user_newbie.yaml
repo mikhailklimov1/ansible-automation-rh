@@ -1,0 +1,12 @@
+---
+- name: Add user newbie
+  hosts: 
+    - ansible1
+    - ansible2
+  tasks:
+    - name: Module user 
+      user:
+        name: newbie
+        state: present
+        uid: 1100
+        password_expire_max: 60

@@ -1,0 +1,10 @@
+---
+- name: Restore index.html (?and restart httpd)
+  hosts:
+    - ansible1
+    - ansible2
+  tasks:
+    - name: Copy index.html to remote host
+      copy:
+        src: files/index.html
+        dest: /var/www/html

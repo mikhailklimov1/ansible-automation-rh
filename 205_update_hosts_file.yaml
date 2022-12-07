@@ -1,0 +1,26 @@
+---
+- name: Update hosts file for control99 record
+  hosts: ansible1,ansible2
+  tasks: 
+    - name: Add control99 record to /etc/hosts
+      lineinfile:
+        line: 192.168.159.99 control99.example.com control99
+        path: /etc/hosts
+        state: present
+- name: Update hosts file for ansible2 record
+  hosts: ansible1
+  tasks: 
+    - name: Add ansible2 record to /etc/hosts
+      lineinfile:
+        line: 192.168.159.102 ansible2.example.com ansible2
+        path: /etc/hosts
+        state: present
+- name: Update hosts file for ansible1 record
+  hosts: ansible2
+  tasks: 
+    - name: Add ansible1 record to /etc/hosts
+      lineinfile:
+        line: 192.168.159.101 ansible1.example.com ansible1
+        path: /etc/hosts
+        state: present
+    

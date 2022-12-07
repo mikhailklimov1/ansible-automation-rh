@@ -1,0 +1,16 @@
+---
+- name: Check webserver is responding
+  hosts:
+    - ansible1
+    - ansible2
+  tasks:
+    - name: Check ansible1
+      uri:
+        url: http://ansible1.example.com
+        return_content: yes
+        status_code: 200
+    - name: Check ansible2
+      uri:
+        url: http://ansible2.example.com
+        return_content: yes
+        status_code: 200
