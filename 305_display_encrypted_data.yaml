@@ -1,0 +1,10 @@
+---
+- name: Print encrypted data
+  hosts: localhost
+#  vars:
+#    secret_user2: vlad
+  vars_files: vars/secrets2.yaml
+  tasks:
+    - name: Fuck, I've forgot to print a "-"
+      debug:
+        msg: "{{ secret_user2 }}"
