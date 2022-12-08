@@ -1,0 +1,12 @@
+---
+- name: Add user
+  vars_files: group_vars/servers
+  hosts: servers
+  tasks:
+    - name: Add user from a file
+      user:
+        name: "{{ user1 }}"
+      register: useradd_result
+    - name: Print result of adding a user
+      debug:
+        var: useradd_result

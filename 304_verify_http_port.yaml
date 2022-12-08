@@ -1,0 +1,14 @@
+---
+- name: Verify if httpd is responding
+  hosts: localhost
+  tasks:
+    - name: Check url and respond for ansible1
+      uri:
+        url: http://ansible1.example.com
+        return_content: true
+        status_code: 200
+    - name: Check url and respond for ansible2
+      uri:
+        url: http://ansible2.example.com
+        return_content: true
+        status_code: 200

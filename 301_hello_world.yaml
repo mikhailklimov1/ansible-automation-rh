@@ -1,0 +1,14 @@
+---
+- name: Debug a var
+  hosts: localhost
+  vars:
+    #- my_var: "Hello world!"
+    my_var: "Hello world!"
+  vars_files: vars/301_vars.yaml
+  tasks:
+    - name: Print a var from a playbook
+      debug:
+        msg: "{{ my_var }}"
+    - name: Print a var from a vars_files
+      debug:
+        msg: "{{ my_var2 }}"
