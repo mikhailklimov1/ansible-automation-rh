@@ -1,0 +1,23 @@
+---
+- name: Print setup
+  hosts: all
+#  gather_facts: no
+  tasks:
+    - name: Setup
+      setup:
+      register: setup1
+    - name: Print setup
+      debug:
+        msg: "{{ setup1 }}"
+    - name: Copy content to a local file on ansible1
+      copy:
+        content: "{{ setup1 }}"
+        dest: 308_dump_{{ ansible_facts.hostname }}.file
+        mode: 0600
+        owner: ansible
+        group: ansible
+    - name: Fetch remote fire to a local file on control
+      fetch:
+        src: 308_dump_{{ ansible_facts.hostname }}.file
+        dest: ./dumps/
+     

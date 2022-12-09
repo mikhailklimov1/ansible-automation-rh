@@ -1,0 +1,25 @@
+---
+- name: Install a package from local facts
+  hosts: ansible2
+  tasks:
+    - name: Install package
+      yum:
+        name: "{{ ansible_facts['ansible_local']['custom']['general']['package'] }}"
+        state: latest
+#    - name: Start service
+#      service: 
+#        name: " {{ ansible_facts['ansible_local']['custom']['general']['service'] }}"
+#        state: " {{ ansible_facts['ansible_local']['custom']['general']['state'] }}"
+#        enabled: " {{ ansible_facts['ansible_local']['custom']['general']['enabled'] }}"
+    - name: Debug
+      debug: 
+        msg: [ 
+             "{{ ansible_facts['ansible_local']['custom']['general']['service'] }}",
+             "{{ ansible_facts['ansible_local']['custom']['general']['state'] }}",
+             "{{ ansible_facts['ansible_local']['custom']['general']['enabled'] }}"
+             ]
+    - name: Start service
+      service: 
+        name: "{{ ansible_facts['ansible_local']['custom']['general']['service'] }}"
+        state: "{{ ansible_facts['ansible_local']['custom']['general']['state'] }}"
+        enabled: "{{ ansible_facts['ansible_local']['custom']['general']['enabled'] }}"

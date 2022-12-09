@@ -1,0 +1,31 @@
+---
+- name: Test an access to 443 (WILL FAIL)
+  hosts: localhost
+  vars:
+    web_user: guest
+  vars_files: vars/secrets.yaml
+  tasks:
+    - name: Test web access port 443
+      uri:
+        url: https://ansible1.example.com
+        validate_certs: no
+        force_basic_auth: yes
+        url_username: "{{ web_user }}"
+        url_password: "{{ web_pass }}"
+        return_content: true
+        status_code: 200
+      register: web_content_https
+    - name: Print content HTTPS
+      debug:
+        msg: "{{ web_content_https['content'] }}"
+    - name: Test web access port 80
+      uri:
+        url: http://ansible1.example.com
+#        url_username: "{{ web_user }}"
+#        url_password: "{{ web_pass }}"
+        return_content: true
+        status_code: 200
+      register: web_content_http
+    - name: Print content HTTP
+      debug:
+        msg: "{{ web_content_http['content'] }}"

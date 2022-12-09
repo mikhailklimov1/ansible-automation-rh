@@ -1,0 +1,15 @@
+---
+- name: Play with facts
+  hosts: ansible1
+  tasks:
+    - name: Print all facts for ansible hosts (1st way)
+      debug:
+        msg: [ 
+        "{{ ansible_facts.processor }}",
+        "{{ ansible_facts.hostname }}"
+        ]
+    - name: Print all facts for ansible hosts (2nd way)
+      debug:
+        msg: |
+             "{{ ansible_facts.processor }}"
+             "{{ ansible_facts.hostname }}"
