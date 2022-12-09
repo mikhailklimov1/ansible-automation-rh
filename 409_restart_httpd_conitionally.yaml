@@ -1,0 +1,14 @@
+---
+- name: Check if httpd is installed and it's running
+  hosts: servers
+  tasks:
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: latest
+      notify: restart_httpd
+  handlers:
+    - name: restart_httpd
+      service:
+        name: httpd
+        state: started

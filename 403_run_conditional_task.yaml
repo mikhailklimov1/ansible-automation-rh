@@ -1,0 +1,16 @@
+---
+- name: Run a conditional task
+  hosts: localhost
+  vars:
+    run_task: true
+  tasks:
+    - name: Run task if run_task is true
+      debug:
+        msg: I'll run this task because run_task is set to {{ run_task }}
+      when: run_task
+    - name: Run task if run_task is true
+      vars:
+        run_task: false
+      debug:
+        msg: I'll run this task because run_task is set to {{ run_task }}
+      when: run_task

@@ -1,0 +1,28 @@
+---
+- name: Test loops
+  hosts: localhost
+  vars:
+    interfaces:
+      - name: Gi0/0
+        mode: access        
+        access_vlan: 10
+      - name: G0/1
+        mode: access
+        access_vlan: 20
+      - name: Gi0/7
+        mode: "trunk dot1q"
+        access_vlan: none
+  tasks:
+    - name: Print interface settings
+      debug:
+        msg: [
+        "Settings for {{ item['name'] }} are:",
+        "Interface mode: {{ item['mode'] }}",
+        "Access vlan: {{ item['access_vlan'] }}"
+        ]
+
+#        msg: |
+#             "Settings for {{ item['name'] }} are:"
+#             "Interface mode: {{ item['mode'] }}"
+#             "Access vlan: {{ item['access_vlan'] }}"
+      loop: "{{ interfaces }}"

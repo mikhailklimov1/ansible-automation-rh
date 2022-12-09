@@ -1,0 +1,11 @@
+---
+- name: Install packages
+  hosts: ansible1
+  tasks:
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - mariadb-server
+        - python3-PyMySQL

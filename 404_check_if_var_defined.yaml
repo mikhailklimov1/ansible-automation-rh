@@ -1,0 +1,16 @@
+---
+- name: Check if var is defined and update host conditionally
+  hosts: ansible1
+  vars:
+    service_2_install: httpd
+  tasks:
+    - name: Install service {{ service_2_install }}
+      yum:
+        name: "{{ service_2_install }}"
+        state: latest
+      when: service_2_install is defined
+    - name: Start service {{ service_2_run }}
+      yum:
+        name: "{{ service_2_run }}"
+        state: latest
+      when: service_2_run is defined

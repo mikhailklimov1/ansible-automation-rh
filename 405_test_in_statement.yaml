@@ -1,0 +1,17 @@
+---
+- name: Test 'in' statement
+  hosts: ansible1
+  vars:
+    supported_distros:
+      - RedHat
+      - Fedora
+      - Rocky
+  tasks:
+    - name: Install httpd if distributive is supported
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution in supported_distros
+    - name: Debug
+      debug:
+        msg: "{{ ansible_distribution }}"
