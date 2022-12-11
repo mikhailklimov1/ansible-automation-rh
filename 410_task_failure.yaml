@@ -1,0 +1,20 @@
+---
+- name: Test task failure and force handlers to run
+  vars:
+    packages:
+      - httpd
+      - nonamepackageforme
+#  force_handlers: yes
+  hosts: db
+  tasks:
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      ignore_errors: yes
+      loop: "{{ packages }}"
+    - name: Restart http
+      service:
+        name: httpd
+        state: restarted
+      

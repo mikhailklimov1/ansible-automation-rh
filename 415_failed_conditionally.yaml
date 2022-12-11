@@ -1,0 +1,7 @@
+---
+- name: Fail a task in condition
+  hosts: ansible1
+  tasks:
+    - shell: hostnamectl
+      register: sh_result
+      failed_when: "'example.com' in sh_result.stdout"

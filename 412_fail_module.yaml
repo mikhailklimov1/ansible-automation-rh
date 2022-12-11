@@ -1,0 +1,14 @@
+---
+- name: Test a fail module
+  hosts: ansible1
+  vars:
+    package: httpd
+  ignore_errors: yes
+  tasks:
+    - name: Fail to do something with {{ package }}
+      fail:
+        msg: Failed
+    - name: Restart {{ package }}
+      service:
+        name: "{{ package }}"
+        state: restarted

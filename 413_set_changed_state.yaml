@@ -1,0 +1,8 @@
+---
+- name: Set changed state
+  hosts: localhost
+  tasks:
+    - name: Shell command
+      shell: cat /etc/fstab
+      register: localhost_fstab
+      changed_when: false

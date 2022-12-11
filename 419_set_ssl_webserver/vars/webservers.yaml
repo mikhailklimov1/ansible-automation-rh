@@ -1,0 +1,4 @@
+ssl_path: ~/pki/{{ inventory_hostname }}
+ssl_cert_path: /etc/pki/tls/certs
+ssl_key_path: /etc/pki/tls/private
+ssl_conf_path: /etc/httpd/conf.d/ssl.conf

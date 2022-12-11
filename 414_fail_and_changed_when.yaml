@@ -1,0 +1,12 @@
+---
+- name: Test a fail module
+  hosts: ansible1
+  vars:
+    package: httpd
+  tasks:
+    - name: Run a shell command
+      shell: nmcli
+#      changed_when: false
+    - name: Fail to do something with {{ package }}
+      fail:
+        msg: Failed

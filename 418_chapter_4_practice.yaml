@@ -1,0 +1,67 @@
+---
+- name: Chapter 4 practice
+  hosts: ansible1
+  vars:
+    packages:
+      - httpd
+      - firewalld
+      - mariadb
+    ssl_cert_dir: /etc/pki/tls/certs/
+    ssl_cert_file: pki/ansible1.crt
+    web_service: httpd
+  tasks:
+    - name: Debug
+      debug:
+        msg: [
+             "{{ ansible_distribution }}",
+             "{{ ansible_memtotal_mb }}"
+             ]
+    - name: Fail Fast Message 
+      fail:
+        msg: Task failed
+#      when: >
+#        ansible_distribution != "RedHat" or
+#        ansible_memtotal_mb < 2000
+      when: ansible_distribution != "Rocky"
+
+    - name: Install all packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ packages }}"
+    - name: Start all packages
+      service:
+        name: "{{ item }}"
+        state: started
+      loop: "{{ packages }}"
+
+    - name: Block of config tasks
+      block:
+        - name: Validate a certs directory
+          file:
+            path: "{{ ssl_cert_dir }}"
+            state: directory
+        - name: Copy cert to remotehost
+          copy:
+            src: "{{ ssl_cert_file }}"
+            dest: "{{ ssl_cert_dir }}"
+      rescue:
+        - name: Resque message
+          debug:
+            msg: "One or more of the configuration changes failed, but the web service is still active."
+    - name: Open http and https ports
+      firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: true
+        immediate: true
+      loop:
+        - http
+        - https
+      notify: restart web service
+
+  handlers:
+    - name: restart web service
+      service:
+        name: "{{ web_service }}"
+        state: restarted

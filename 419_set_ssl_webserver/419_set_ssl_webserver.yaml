@@ -1,0 +1,68 @@
+---
+- name: Set up https web-server
+  hosts: webservers
+  vars_files: vars/webservers.yaml
+  tasks:
+#    - name: Debug vars
+#      debug:
+#        msg: [
+#        "{{ ssl_path }}",
+#        "{{ ssl_cert_path }}",
+#        "{{ ssl_key_path }}",
+#        "{{ inventory_hostname }}",
+#        "{{ ssl_path }}/{{ inventory_hostname }}.crt"
+#        ]
+
+    - name: Install httpd and mod_ssl
+      yum:
+        name:
+          - httpd
+          - mod_ssl
+        state: latest
+
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: true
+        
+    - name: Copy ssl files block
+      block:
+        - name: Copy CERT file
+          copy:
+            src: "{{ ssl_path }}/{{ inventory_hostname }}.crt"
+            dest: "{{ ssl_cert_path }}"
+        - name: Copy KEY file
+          copy:
+            src: "{{ ssl_path }}/{{ inventory_hostname }}.pem"
+            dest: "{{ ssl_key_path }}"
+
+    - name: Write a configuration file for mod_ssl configuration block
+      block:
+        - name: Set CERT path
+          lineinfile:
+            path: "{{ ssl_conf_path }}"
+            regexp: ^SSLCertificateFile
+            line: "SSLCertificateFile {{ ssl_cert_path }}/{{ inventory_hostname }}.crt"
+            state: present
+        - name: Set KEY path
+          lineinfile:
+            path: "{{ ssl_conf_path }}"
+            regexp: ^SSLCertificateKeyFile
+            line: "SSLCertificateKeyFile {{ ssl_key_path }}/{{ inventory_hostname }}.pem"
+            state: present
+      notify: Restart httpd
+
+    - name: Open a firewall port for https
+      firewalld:
+        service: https
+        state: enabled
+        permanent: yes
+        immediate: yes
+      notify: Restart httpd
+
+  handlers:
+    - name: Restart httpd
+      service:
+        name: httpd
+        state: restarted
