@@ -1,0 +1,7 @@
+---
+- name: Test vars debug
+  
+  hosts: servers
+  tasks:
+    - debug:
+        msg: "{{ host_timezone }}"
