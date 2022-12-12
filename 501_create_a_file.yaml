@@ -1,0 +1,46 @@
+---
+- name: File operations
+  hosts: ansible1
+  tasks:
+#  - name: Create a blank file
+#    file:
+#      path: ~/501_file.txt
+#      owner: ansible
+#      group: ansible
+#      mode: 0600
+#      state: touch
+  - name: Create a blank file
+    file:
+      path: /home/ansible/501_file.txt
+      owner: ansible
+      group: ansible
+      mode: 0600
+      state: touch
+      setype: httpd_sys_content_t
+
+  - name: Add line to a file
+    lineinfile:
+      path: /home/ansible/501_file.txt
+      line: "Add this line to the file"
+      state: present
+
+  - name: Add block to a file
+    blockinfile:
+      path: /home/ansible/501_file.txt
+      block: |
+        First line in the block
+        Second line in the block
+      state: present
+
+  - name: Get a md5 hash sum
+    stat:
+      path: /home/ansible/501_file.txt
+      checksum_algorithm: md5
+    register: result
+  - name: Print a stat result
+    debug:
+      msg: [ 
+        "{{ result.stat }}",
+        "##########################",
+        "{{ result.stat.checksum }}"
+      ]

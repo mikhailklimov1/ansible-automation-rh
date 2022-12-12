@@ -1,0 +1,8 @@
+---
+- name: Fetch security logs from managed host
+  hosts: ansible1
+  tasks:
+  - name: Fetch /var/log/secure
+    fetch:
+      src: /var/log/secure
+      dest: secure-backups/

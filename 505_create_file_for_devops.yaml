@@ -1,0 +1,23 @@
+---
+- name: Create a file in devops homedir
+  hosts: ansible1
+  tasks:
+    - name: Copy file to dest host
+      copy:
+        src: files/users.txt
+        dest: /home/devops/users.txt
+        owner: devops
+        group: devops
+        mode: u+rw,g-rx,o-rx
+#        mode: 0600
+#        setype: samba_share_t
+
+#    - name: Update SE setting for a file
+#      file:
+#        path: /home/devops/users.txt
+#        selevel: _default
+#        serole: _default
+#        setype: _default
+#        seuser: _default
+     
+

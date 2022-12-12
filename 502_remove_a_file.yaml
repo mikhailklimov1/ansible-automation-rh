@@ -1,0 +1,9 @@
+---
+- name: File operations
+  hosts: ansible1
+  tasks:
+  - name: Remove file
+    file:
+      path: /home/ansible/501_file.txt
+      state: absent
+

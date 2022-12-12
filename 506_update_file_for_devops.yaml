@@ -1,0 +1,19 @@
+---
+- name: Update a file in devops homedir
+  hosts: ansible1
+  tasks:
+    - name: Add line to the users.txt
+      lineinfile:
+        path: /home/devops/users.txt
+        line: "This line was added by ansible script"
+        state: present
+
+    - name: Add users records to the users.txt
+      lineinfile:
+        path: /home/devops/users.txt
+        line: "{{ item }}"
+        state: present
+      loop:
+        - root
+        - ansible
+        - devops

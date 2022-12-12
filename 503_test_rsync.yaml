@@ -1,0 +1,17 @@
+---
+- name: Test rsync
+  hosts: ansible1
+  vars:
+    src_file_path: files/text.file
+    dest_file_path: /home/ansible/text.file
+  tasks:
+  - name: Debug
+    debug:
+      msg: [
+         "{{ src_file_path }}",
+         " {{ dest_file_path }}"
+      ]
+  - name: Syncronize a text file
+    synchronize:
+      src: "{{ src_file_path }}"
+      dest: "{{ dest_file_path }}"
