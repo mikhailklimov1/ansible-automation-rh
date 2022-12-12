@@ -1,0 +1,4 @@
+---
+- name: Apply roles to the server
+  hosts: ansible1
+  roles:
