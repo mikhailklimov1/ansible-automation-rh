@@ -1,3 +1,0 @@
-#Hostvars
-
-ansible localhost -m debug -a 'var=hostvars["localhost"]'
