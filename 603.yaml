@@ -1,0 +1,7 @@
+---
+- name: This is an imported playbook 603.yaml
+  hosts: all
+  tasks:
+    - name: Show hostname
+      debug:
+        var: ansible_facts['hostname']

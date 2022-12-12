@@ -1,0 +1,9 @@
+---
+- name: Install and run httpd
+  hosts: servers,!db
+  tasks:
+    - name: Import task 605
+      import_tasks: 605_install_and_run.yaml
+      vars:
+        package: httpd
+        service: httpd

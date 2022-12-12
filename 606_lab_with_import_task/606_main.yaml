@@ -1,0 +1,31 @@
+---
+- name: Main play
+  hosts: ansible2
+  tasks:
+    - name: Install services
+      import_tasks: tasks/607_environment.yaml
+      vars:
+        package: httpd
+        service: httpd
+    - name: Install and setup firewall
+      import_tasks: tasks/608_firewall.yaml
+      vars:
+        firewall_pkg: firewalld
+        firewall_svc: firewalld
+        rule:
+          - http
+          - https
+    - name: Install default page
+      import_tasks: tasks/609_placeholder.yaml
+      vars:
+        file: /var/www/html/index.html
+
+    - name: Check webserver is up and running
+      uri:
+        url: http://ansible2.example.com
+        status_code: 200
+        return_content: true
+      register: webcontent
+    - name: Webserver's content
+      debug:
+        msg: "{{ webcontent['content'] }}"

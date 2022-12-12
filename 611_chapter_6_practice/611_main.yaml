@@ -1,0 +1,19 @@
+---
+- name: Main play
+  hosts: ansible2
+  tasks:
+    - name: Install webserver
+      import_tasks: tasks/612.yaml
+      vars:
+        packages:
+          - httpd
+          - mod_ssl
+        service: httpd
+    - name: Open firewall port
+      import_tasks: tasks/613_firewall.yaml
+      vars:
+        services:
+          - http
+          - https
+          - ntp
+          - ssh

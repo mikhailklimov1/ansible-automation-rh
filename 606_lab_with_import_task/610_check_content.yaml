@@ -1,0 +1,12 @@
+---
+- name: Check webserver is online
+  hosts: ansible2
+  tasks:
+    - uri:
+        url: http://ansible2.example.com
+        status_code: 200
+        return_content: true
+      register: webcontent
+    - name: Webserver's content
+      debug:
+        msg: "{{ webcontent['content'] }}"

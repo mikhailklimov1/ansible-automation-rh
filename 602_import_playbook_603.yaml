@@ -1,0 +1,9 @@
+---
+- name: Import playbook 603
+  hosts: all
+  tasks:
+    - name: This is a debug task in main playbook
+      debug:
+        msg: "It's a debug in main playbook."
+- name: Import test playbook 603.yaml
+  import_playbook: 603.yaml

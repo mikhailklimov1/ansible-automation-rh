@@ -27,7 +27,7 @@
     - name: Create a symlink to issues
       file:
         src: /etc/issues
-        dest: /etc/issues.net
+        path: /etc/issues.net
         state: link
         owner: root
         group: root

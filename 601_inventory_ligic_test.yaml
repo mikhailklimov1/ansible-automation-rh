@@ -1,0 +1,10 @@
+---
+- name: Check inventory file with & or !
+#  hosts: servers,&db
+#  hosts: servers,!db
+#  hosts: '*1'
+  hosts: 'server*'
+  tasks:
+    - name: Debug hostname
+      debug:
+        var: ansible_hostname

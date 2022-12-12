@@ -1,0 +1,13 @@
+---
+  - name: Install {{ packages }}
+    yum:
+      name: "{{ item }}"
+      state: latest
+    loop: "{{ packages }}"
+
+  - name: Start {{ service }}
+    service:
+      name: "{{ service }}"
+      state: started
+      enabled: true
+

@@ -1,0 +1,8 @@
+---
+  - name: Open {{ services }} on firewall
+    firewalld:
+      service: "{{ item }}"
+      state: enabled
+      permanent: true
+      immediate: true
+    loop: "{{ services }}"

@@ -1,0 +1,16 @@
+#[localhost]
+#localhost
+
+[servers]
+ansible1
+ansible2
+
+[db]
+ansible1
+
+#[new_servers]
+#ansible3
+#ansible4
+
+[servers:vars]
+ansible_user=ansible
