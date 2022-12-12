@@ -1,0 +1,9 @@
+---
+- name: Deploy a j2 config file
+  hosts: ansible1
+  tasks:
+    - name: Copy j2 to the dest
+      template:
+        src: files/sshd_config.j2
+        dest: /tmp/test-config-file.conf
+

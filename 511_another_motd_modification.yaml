@@ -1,0 +1,34 @@
+---
+- name: Test a template module
+  hosts: ansible1
+  tasks:
+    - name: Add a new motd file
+      template:
+        src: files/motd_2.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644
+    - name: Check permitions
+      stat:
+        path: /etc/motd
+      register: results
+    - name: Print results
+      debug:
+        msg: "{{ results }}"
+
+    - name: Copy issues file
+      copy:
+        src: files/issues
+        dest: /etc/issues
+        owner: root
+        group: root
+        mode: 0644
+    - name: Create a symlink to issues
+      file:
+        src: /etc/issues
+        dest: /etc/issues.net
+        state: link
+        owner: root
+        group: root
+        force: yes

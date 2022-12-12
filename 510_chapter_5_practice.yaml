@@ -1,0 +1,20 @@
+---
+- name: Chapter 5 practice
+  hosts: ansible1
+#  vars:
+#    ansible_managed: "This system is managed by ANSIBLE"
+  tasks:
+    - name: Debug
+      debug:
+        msg: [
+#          "{{ ansible_facts }}",
+          "memtotal_mb: {{ ansible_facts['memtotal_mb'] }}",
+          "processor_count: {{ ansible_facts['processor_count'] }}"
+        ]
+
+    - name: Modify motd file
+      vars:
+        ansible_managed: "This system is managed by ANSIBLE"
+      template:
+        src: files/motd_2.j2
+        dest: /etc/motd

@@ -1,0 +1,8 @@
+---
+- name: Remove file users.txt
+  hosts: ansible1
+  tasks:
+    - name: Remove file users.txt
+      file:
+        path: /home/devops/users.txt
+        state: absent

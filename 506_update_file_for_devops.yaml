@@ -17,3 +17,11 @@
         - root
         - ansible
         - devops
+
+    - name: Add block to the file
+      blockinfile:
+        path: /home/devops/users.txt
+        block: |
+          This is line 1
+          This is line 2
+          This is line 3
