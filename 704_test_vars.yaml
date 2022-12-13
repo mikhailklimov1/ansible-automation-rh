@@ -5,3 +5,7 @@
   tasks:
     - debug:
         msg: "{{ host_timezone }}"
+    - debug:
+        msg: "{{ ansible_facts['fqdn'] }}"
+    - debug:
+        msg: "{{ ansible_facts['hostname'] }}"

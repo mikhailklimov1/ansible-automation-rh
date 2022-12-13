@@ -1,0 +1,28 @@
+---
+# tasks file for myvhost
+- name: Install httpd
+  yum:
+    name: httpd
+    state: latest
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+- name: vhost file is installed
+  template:
+    src: files/vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart httpd
+- name: Create a directory
+  file:
+    path: "/var/www/vhosts/{{ ansible_facts['hostname'] }}"
+    state: directory
+- name: Copy web content
+  template:
+    src: files/index.html.j2
+    dest: "/var/www/vhosts/{{ ansible_facts['hostname'] }}/index.html"

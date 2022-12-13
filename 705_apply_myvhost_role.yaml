@@ -1,0 +1,11 @@
+---
+- name: Apply a role
+  hosts: ansible1
+
+  pre_tasks:
+    - name: pre_tasks message
+      debug:
+        msg: 'Ensure web server configuration.'
+
+  roles:
+    - myvhost
