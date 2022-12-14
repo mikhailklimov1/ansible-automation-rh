@@ -1,0 +1,4 @@
+---
+selinux_ports:
+  - { ports: '82', proto: 'tcp', setype: 'http_port_t', state: 'present' }
+
