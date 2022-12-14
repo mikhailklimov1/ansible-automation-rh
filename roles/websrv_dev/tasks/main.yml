@@ -10,11 +10,19 @@
       yum:
         name: httpd
         state: latest
+<<<<<<< HEAD
 #    - name: Start and enable httpd
 #      service:
 #        name: httpd
 #        enabled: true
 #        state: started
+=======
+    - name: Start and enable httpd
+      service:
+        name: httpd
+        enabled: true
+        state: started
+>>>>>>> afb0debaab93744335cc578f73380f9c6ececd97
     - name: Create a vhosts file in /etc/httpd/conf.d/vhost.conf
       file:
         path: /etc/httpd/conf.d/vhost.conf
@@ -41,7 +49,11 @@
       </VirtualHost>
     path: /etc/httpd/conf.d/vhost.conf
     marker: "#{mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+<<<<<<< HEAD
 #  notify: Restart httpd
+=======
+  notify: Restart httpd
+>>>>>>> afb0debaab93744335cc578f73380f9c6ececd97
   loop: "{{ developers }}"
 
 - name: Add listen instruction to /etc/httpd/conf/httpd.conf
@@ -49,7 +61,11 @@
     line: Listen {{ item.port }}
     path: /etc/httpd/conf/httpd.conf
     insertafter: ^Listen
+<<<<<<< HEAD
 #  notify: Restart httpd
+=======
+  notify: Restart httpd
+>>>>>>> afb0debaab93744335cc578f73380f9c6ececd97
   loop: "{{ developers }}"
 
 - name: Make a directory and a file for users in /var/www/ folder
@@ -63,6 +79,7 @@
     permanent: true
     immediate: true    
   loop: "{{ developers }}"
+<<<<<<< HEAD
 
 - name: Start and enable httpd
   service:
@@ -70,3 +87,5 @@
     enabled: true
     state: started
 
+=======
+>>>>>>> afb0debaab93744335cc578f73380f9c6ececd97

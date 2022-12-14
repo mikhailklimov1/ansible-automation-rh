@@ -3,7 +3,10 @@
   hosts: servers
   pre_tasks:
     - name: Check SELinux configuration
+<<<<<<< HEAD
 #      vars_files: selinux.yaml
+=======
+>>>>>>> afb0debaab93744335cc578f73380f9c6ececd97
       block:
         - include_role:
             name: rhel-system-roles.selinux
