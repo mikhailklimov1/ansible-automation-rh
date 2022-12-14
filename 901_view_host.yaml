@@ -1,0 +1,25 @@
+---
+- name: Test access to RHEL host
+  hosts: rhel_servers
+  tasks:
+
+    - name: Debug ansible facts
+      debug:
+        msg: [
+          "{{ ansible_facts['fqdn'] }}",
+          "{{ ansible_facts['distribution'] }}",
+          "{{ ansible_facts['distribution_version'] }}"
+        ]
+
+    - name: Gather info on installed packages
+      package_facts:
+        manager: auto
+
+
+    - name: List installed packages
+      debug:
+        msg: "{{ ansible_facts['packages'] }}"
+
+    - name: List NetworkManager version
+      debug:
+        msg: "{{ ansible_facts['packages']['NetworkManager'] }}"

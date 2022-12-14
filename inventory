@@ -8,6 +8,10 @@ ansible2
 [db]
 ansible1
 
+[rhel_servers]
+ansible3
+ansible4
+
 #[new_servers]
 #ansible3
 #ansible4
