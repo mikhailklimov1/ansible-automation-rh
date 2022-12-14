@@ -1,0 +1,72 @@
+---
+# tasks file for websrv_dev
+- name: Install and make initial config for a web-server
+  block:
+#    - name: Debug all vars
+#      debug:
+#        msg: "{{ item.name }} will get folder /var/www/{{ item.name }} and port {{ item.port }}"
+#      loop: "{{ developers }}"
+    - name: Install web-server httpd
+      yum:
+        name: httpd
+        state: latest
+#    - name: Start and enable httpd
+#      service:
+#        name: httpd
+#        enabled: true
+#        state: started
+    - name: Create a vhosts file in /etc/httpd/conf.d/vhost.conf
+      file:
+        path: /etc/httpd/conf.d/vhost.conf
+        owner: root
+        group: root
+        mode: 0644
+        state: touch
+
+- name: Add vhost configuration for user {{ item.name }} to the /etc/httpd/conf.d/vhosts.conf
+  blockinfile:
+    backup: true
+    block: |
+      <VirtualHost *:{{ item.port }}>
+      ServerAdmin webmaster@{{ ansible_facts['fqdn'] }}
+      ServerName {{ ansible_facts['fqdn'] }}
+      ErrorLog logs/{{ ansible_facts['hostname'] }}-{{ item.name }}-error.log
+      CustomLog logs/{{ ansible_facts['hostname'] }}-{{ item.name }}-common.log common
+      DocumentRoot /var/www/vhosts/{{ item.name }}/
+      <Directory /var/www/vhosts/{{ item.name }}/>
+      Options +Indexes +FollowSymlinks +Includes
+      Order allow,deny
+      Allow from all
+      </Directory>
+      </VirtualHost>
+    path: /etc/httpd/conf.d/vhost.conf
+    marker: "#{mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+#  notify: Restart httpd
+  loop: "{{ developers }}"
+
+- name: Add listen instruction to /etc/httpd/conf/httpd.conf
+  lineinfile:
+    line: Listen {{ item.port }}
+    path: /etc/httpd/conf/httpd.conf
+    insertafter: ^Listen
+#  notify: Restart httpd
+  loop: "{{ developers }}"
+
+- name: Make a directory and a file for users in /var/www/ folder
+  include_tasks: create_webdir.yaml
+  loop: "{{ developers }}"
+
+- name: Open ports on firewall
+  firewalld:
+    port: "{{ item.port }}/tcp"
+    state: enabled
+    permanent: true
+    immediate: true    
+  loop: "{{ developers }}"
+
+- name: Start and enable httpd
+  service:
+    name: httpd
+    enabled: true
+    state: started
+

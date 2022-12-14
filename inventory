@@ -15,8 +15,8 @@ ansible1
 [servers:vars]
 ansible_user=ansible
 
-#[ansible1:vars]
-#host_timezone: Asia/Tbilisi
+[ansible1:vars]
+host_timezone: Asia/Tbilisi
 
-#[ansible2:vars]
-#host_timezone: Europe/Berlin
+[ansible2:vars]
+host_timezone: Europe/Berlin

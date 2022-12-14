@@ -1,0 +1,11 @@
+---
+# vars file for websrv_dev
+developers:
+  - name: erwin
+    port: 9081
+  - name: marta
+    port: 9082
+  - name: andy
+    port: 9083
+  - name: leo
+    port: 9084

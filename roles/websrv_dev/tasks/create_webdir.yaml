@@ -1,0 +1,9 @@
+---
+- name: Create a directory for {{ item.name }}
+  file:
+    path: "/var/www/vhosts/{{ item.name }}"
+    state: directory
+- name: Copy content to the file for {{ item.name }}
+  copy:
+    content: "This is a {{ item.name }}'s website on {{ ansible_facts['fqdn'] }}"
+    dest: "/var/www/vhosts/{{ item.name }}/index.html"

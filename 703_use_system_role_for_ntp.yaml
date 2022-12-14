@@ -14,8 +14,8 @@
 
   post_tasks:
     - name: Set timezone
-#      vars:
-#        host_timezone: Asia/Tbilisi
+      vars:
+        host_timezone: Asia/Tbilisi
       timezone:
         name: "{{ host_timezone }}"
       notify: reboot host
