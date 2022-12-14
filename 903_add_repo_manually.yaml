@@ -1,0 +1,18 @@
+---
+- name: Manually add required repo
+  hosts: ansible3
+  tasks:
+    - name: Deploy the GPG public key
+      rpm_key:
+        key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+        state: present
+
+    - name: Add test repo file
+      yum_repository:
+        file: example
+        name: example-internal
+        description: Example Inc. Internal YUM repo
+        baseurl: http://materials.example.com/yum/repository/
+        enabled: yes
+        gpgcheck: yes
+        state: present

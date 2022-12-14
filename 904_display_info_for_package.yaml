@@ -1,0 +1,13 @@
+---
+- name: Display info on package
+  vars:
+    package_name: NetworkManager
+  hosts: ansible3
+  tasks:
+    - name: Collect packages data
+      package_facts:
+        manager: auto
+    - name: Display info on package {{ package_name }}
+      debug:
+        var: ansible_facts.packages[package_name]
+      when: package_name in ansible_facts.packages

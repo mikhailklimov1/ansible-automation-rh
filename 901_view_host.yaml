@@ -15,11 +15,11 @@
       package_facts:
         manager: auto
 
-
-    - name: List installed packages
-      debug:
-        msg: "{{ ansible_facts['packages'] }}"
+#    - name: List installed packages
+#      debug:
+#        msg: "{{ ansible_facts['packages'] }}"
 
     - name: List NetworkManager version
       debug:
-        msg: "{{ ansible_facts['packages']['NetworkManager'] }}"
+#        msg: "{{ ansible_facts['packages']['NetworkManager'][0]['release'] }}"
+        msg: "{{ ansible_facts['packages']['NetworkManager'][0]['version'] }}"

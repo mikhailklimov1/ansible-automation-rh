@@ -1,0 +1,39 @@
+---
+- name: Add user
+  hosts: rhel_servers
+  vars:
+    groups_to_add:
+      - name_: developers
+        id_: 2500
+      - name_: engineers
+        id_: 2501
+    myusers_:
+      - name_: devops
+        id_: 3000
+        shell_: /bin/bash
+        groups_: developers, engineers
+      - name_: engineer
+        id_: 3001
+        shell_: /bin/bash
+        groups_: engineers
+      - name_: developer
+        id_: 3002
+        shell_: /bin/bash
+        groups_: developers
+
+  tasks:
+
+    - name: Add a group
+      group: 
+        name: "{{ item.name_ }}"
+        gid: "{{ item.id_ }}"
+        state: present
+      loop: "{{ groups_to_add }}"
+      
+    - name: Add user {{ myusers_.name_ }}
+      user:
+        name: "{{ item.name_ }}"
+        shell: "{{ item.shell_ }}"
+        uid: "{{ item.id_ }}"
+        groups: "{{ item.groups_ }}"
+      loop: "{{ myusers_ }}"

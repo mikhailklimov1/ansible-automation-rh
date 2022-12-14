@@ -1,0 +1,11 @@
+---
+- name: Register system to the subscription management
+  vars_files: ~/vars/creds.yaml
+  hosts: ansible3
+  tasks:
+    - name: Register system with subscription-manager
+      redhat_subscription:
+        auto_attach: yes
+        state: present
+        username: "{{ username_ }}"
+        password: "{{ password_ }}"
