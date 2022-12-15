@@ -1,0 +1,51 @@
+---
+- hosts: ansible2
+  vars_files: vars/916_storage.yaml
+  tasks:
+    - name: Create partition
+      parted:
+        device: "{{ item.device_ }}"
+        part_end: "{{ item.size_ }}"
+        number: "{{ item.number_ }}"
+        state: present
+      loop: "{{ pvdata_ }}"
+    - name: Create VG
+      lvg:
+        vg: "{{ item.name_ }}"
+        pvs: "{{ item.device_ }}"
+        state: present
+        pesize: 32M
+      loop: "{{ vgdata_ }}"
+
+    - name: Create LV
+      lvol:
+        lv: "{{ item.name_ }}"
+        vg: "{{ item.vg_}}"
+        size: "{{ item.size_ }}"
+        state: present
+      loop: "{{ lvdata_ }}"
+      when: item.name_ not in ansible_lvm["lvs"]
+
+    - name: Create filesystem
+      filesystem:
+        dev: "/dev/{{ item.vg_}}/{{ item.name_ }}"
+        fstype: "{{ item.fs_ }}"
+      loop: "{{ lvdata_ }}"
+
+    - name: Resize LV
+      lvol:
+        lv: "{{ item.name_ }}"
+        vg: "{{ item.vg_}}"
+        size: "{{ item.size_ }}"
+        resizefs: yes
+        force: yes
+      loop: "{{ lvdata_ }}"
+
+    - name: Mount a patition
+      mount:
+        boot: yes
+        fstype: "{{ item.fs_ }}"
+        path: "{{ item.mountpoint_ }}"
+        src: "/dev/{{ item.vg_}}/{{ item.name_ }}"
+        state: mounted
+      loop: "{{ lvdata_ }}"
