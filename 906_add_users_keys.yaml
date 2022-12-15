@@ -1,0 +1,41 @@
+---
+- hosts: ansible2
+  vars_files: vars/906_vars.yaml
+  tasks:
+
+    - name: Add group
+      group:
+        name: webadmin
+        
+    - name: Add users
+      user:
+        name: "{{ item.username }}"
+        group: "{{ item.groups }}"
+      loop: "{{ users }}"
+
+    - name: Copy pub key
+      authorized_key:
+        key: "{{ lookup('file', 'files/'+ item.username + '.key.pub') }}"
+# without lookup it doesnt work
+#        key: "files/{{ item.username }}.key.pub"
+        user: "{{ item.username }}"
+      loop: "{{ users }}"
+
+    - name: Add record to sudoers.d/webadmin
+      copy:
+        content: "%webadmin       ALL=(ALL)       NOPASSWD: ALL"
+        dest: /etc/sudoers.d/webadmin
+        mode: 0440
+
+    - name: Deny root login via ssh
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: ^PermitRootLogin
+        line: "PermitRootLogin no"
+      notify: Restart sshd
+
+  handlers:
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted

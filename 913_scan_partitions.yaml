@@ -1,0 +1,20 @@
+---
+- hosts: ansible2
+  become: true
+  vars:
+    scan_files:
+      - "/sys/class/scsi_host/host0/scan"
+      - "/sys/class/scsi_host/host1/scan"
+      - "/sys/class/scsi_host/host2/scan"
+      
+  tasks:
+#    - name: Try to activate a block device
+#      lineinfile:
+#        line: "- - -"
+#        path: "{{ item }}"
+#        state: present
+#      loop: "{{ scan_files }}"
+    - name: Try to scan with shell
+      shell:
+        cmd: echo "- - -" >> "{{ item }}"
+      loop: "{{ scan_files }}"

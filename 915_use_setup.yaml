@@ -1,0 +1,15 @@
+---
+- hosts: ansible2
+  tasks:
+    - name: Setup 1
+      setup:
+        filter: ansible_device_links
+      register: setup1
+    - debug:
+        msg: "{{ setup1 }}"
+    - name: Setup 2
+      setup:
+        filter: ansible_mounts
+      register: setup2
+    - debug:
+        msg: "{{ setup2 }}"

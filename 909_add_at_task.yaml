@@ -1,0 +1,10 @@
+---
+- hosts: ansible2
+  tasks:
+    - name: At task
+      at:
+        command: "date > ~/my_at_date_time.at\n"
+        count: 1
+        units: minutes
+        unique: yes
+        state: present

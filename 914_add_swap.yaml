@@ -1,0 +1,35 @@
+---
+- hosts: ansible2
+  tasks:
+    - name: Create a partition
+      parted:
+        device: /dev/sdc
+        part_end: 2GB
+        label: msdos
+        state: present
+        number: 1
+       state: present
+    - name: Create a logical volume
+      lvol:
+        lv: swap
+        vg: additional
+        size: 1G
+        state: present
+    - name: Make swap
+      command:
+        cmd: mkswap /dev/additional/swap
+      ignore_errors: yes
+    - name: Enable swap
+      command:
+        cmd: swapon /dev/additional/swap
+      ignore_errors: yes
+    - name: Add configuration line to the /etc/fstab
+      lineinfile:
+        line: "/dev/additional/swap swap swap defaults 0 0"
+        state: present
+        path: /etc/fstab
+
+    - name: Debug
+      debug:
+#        msg: "{{ ansible_facts['devices'] }}"
+        msg: "{{ ansible_facts }}"

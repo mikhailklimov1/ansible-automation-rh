@@ -1,0 +1,14 @@
+---
+- hosts: ansible2
+  tasks:
+#    - name: Change default target to graphical
+#      file:
+#        src: /usr/lib/systemd/system/graphical.target
+#        path: /etc/systemd/system/default.target
+#        state: link
+
+    - name: Change default target to multi-user
+      file:
+        src: /usr/lib/systemd/system/multi-user.target
+        path: /etc/systemd/system/default.target
+        state: link

@@ -1,0 +1,5 @@
+---
+- hosts: ansible2
+  tasks:
+    - name: Reboot {{ ansible_facts['hostname'] }}
+      reboot:

@@ -1,0 +1,50 @@
+---
+- hosts: ansible2
+  vars:
+    scan_files:
+      - "/sys/class/scsi_host/host0/scan"
+      - "/sys/class/scsi_host/host1/scan"
+      - "/sys/class/scsi_host/host2/scan"
+      
+  tasks:
+    - name: Debug
+      debug:
+        msg: "{{ ansible_facts['devices'] }}"
+#      when: sda in {{ ansible_facts['devices'] }}
+
+    - name: Add partition to sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_end: 8GB
+
+    - name: Create a VG
+      lvg:
+        vg: additional
+        state: present
+        pesize: 32M
+        pvs: /dev/sdb1
+
+    - name: Create a LV
+      lvol:
+        lv: data
+        size: 2G
+        vg: additional
+
+    - name: Create filesystem
+      filesystem:
+        dev: /dev/additional/data
+        fstype: ext4
+
+    - name: Create mount point
+      file:
+        path: /data
+        state: directory
+
+    - name: Mount a device to the mount point
+      mount:
+        path: /data
+        src: /dev/additional/data
+        state: mounted
+        fstype: ext4

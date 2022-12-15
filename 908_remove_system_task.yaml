@@ -1,0 +1,9 @@
+---
+- hosts: ansible2
+  tasks:
+    - name: Remove a crom job
+      cron:
+        name: Remove "add date and time to a file" job
+        user: devops
+        cron_file: add-date-time
+        state: absent
