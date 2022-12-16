@@ -1,0 +1,19 @@
+---
+pvdata_:
+  - dev_: /dev/sdb
+    num_: 1
+vgdata_:
+  - vgname_: apache-vg
+    pv_: /dev/sdb1
+
+lvdata_:
+  - lvname_: content-lv
+    fs_: xfs
+    mountpoint_: /var/www
+    size_: 1G
+    vgname_: apache-vg
+  - lvname_: logs-lv  
+    fs_: xfs
+    mountpoint_: /var/log/httpd
+    size_: 512M
+    vgname_: apache-vg

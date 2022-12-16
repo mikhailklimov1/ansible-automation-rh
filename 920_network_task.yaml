@@ -1,0 +1,25 @@
+---
+- name: NIC Configuration
+  hosts: ansible2
+  vars:
+    network_provider: nm
+    network_connections:
+      - name: ens33
+        state: up
+        type: ethernet
+        autoconnect: yes
+        ip:
+          address: 
+            - 192.168.159.102/24
+          gateway4: 192.168.159.2
+#      - name: eth1
+#        state: down
+#        type: ethernet
+#        autoconnect: no
+#        ip:
+#          address: 
+#            - 10.1.0.1/24
+#          gateway4: 10.1.0.254
+  roles:
+    - rhel-system-roles.network
+

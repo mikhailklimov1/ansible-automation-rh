@@ -1,0 +1,73 @@
+---
+- hosts: ansible2
+  vars_files: vars/921_storage.yaml
+  tasks:
+
+    - name: Install jenkins repo
+      yum_repository:
+        baseurl: http://pkg.jenkins.io/redhat
+        gpgcheck: yes
+        name: Jenkins
+        description: "eJenkins repo"
+
+    - name: Create group webadmin
+      group:
+        name: webadmin
+        state: present
+
+    - name: Create and add users to the group
+      user:
+        name: "{{ item }}"
+        groups: webadmin
+      loop:
+        - ops1
+        - ops2
+        - devops
+
+    - name: Add partition to /dev/sdb # if no size specified => 100% will be used 
+      parted:
+        device: "{{ item['dev_'] }}"
+        state: present
+        number: "{{ item['num_'] }}"
+      loop: "{{ pvdata_ }}"
+
+    - name: Add VG
+      lvg:
+        pvs: "{{ item['pv_'] }}"
+        vg: "{{ item['vgname_'] }}"
+        state: present
+      loop: "{{ vgdata_ }}"
+
+    - name: Create LVs
+      lvol:
+        lv: "{{ item['lvname_'] }}"
+        size: "{{ item['size_'] }}"
+        vg: "{{ item['vgname_'] }}"
+        state: present
+      loop: "{{ lvdata_ }}"
+
+    - name: Create filesystem
+      filesystem:
+        dev: "/dev/{{ item['vgname_'] }}/{{ item['lvname_'] }}"
+        fstype: "{{ item['fs_'] }}"
+        state: present
+      loop: "{{ lvdata_ }}"
+      
+    - name: Mount LVs
+      mount:
+        fstype: "{{ item['fs_'] }}"
+        src: "/dev/{{ item['vgname_'] }}/{{ item['lvname_'] }}"
+        path: "{{ item['mountpoint_'] }}"
+        state: mounted
+      loop: "{{ lvdata_ }}"
+
+    - name: Create a cron task
+      cron:
+        name: Add disk info to a file
+        minute: "*/2"
+        day: 9-16
+        weekday: 1-5
+        user: devops
+        cron_file: /etc/cron.d/disk_usage
+        job: df -h >> /home/devops/disk_usage
+        state: present
