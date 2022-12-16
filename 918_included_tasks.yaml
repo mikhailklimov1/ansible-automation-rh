@@ -1,0 +1,12 @@
+---
+- name: Create a partititon
+  parted:
+    device: "{{ item['device_'] }}"
+    number: "{{ item['number_'] }}"
+    part_end: "{{ item['size_'] }}"
+    state: present
+#        - name: Create a VG
+#          lvg:
+#        - name: Create a LV
+#          lvol:
+

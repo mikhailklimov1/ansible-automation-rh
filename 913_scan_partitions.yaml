@@ -1,5 +1,5 @@
 ---
-- hosts: ansible2
+- hosts: servers
   become: true
   vars:
     scan_files:

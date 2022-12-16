@@ -1,0 +1,41 @@
+---
+- hosts: ansible1 #,ansible2
+  vars_files: vars/917_vars.yaml
+  tasks:
+
+    - name: Debug
+      debug:
+        msg: "{{ ansible_devices['sdb'] }}"
+      when: ansible_devices['sdb']
+
+    - name: Debug2
+      debug:
+        msg: "{{ vgdata_[0]['pvolumes_'] }}"
+      when: ansible_devices['sdb']
+
+    - name: Debug3
+      debug:
+        msg: "{{ item['pvolumes_'] }}"
+      loop: "{{ vgdata_ }}"
+      when: ansible_devices['sdb']
+
+#    - name: Create a partion if /dev/sdb exists
+#      parted:
+#        device: "{{ item['pvolumes_']['device_'] }}"
+#        number: "{{ item['pvolumes_']['number_'] }}"
+#        part_end: "{{ item['pvolumes_']['size_'] }}"
+#        status: present
+#      loop: "{{ vgdata_ }}"
+#      when: ansible_devices['sdb']
+
+    - name: Create a partion if /dev/sdb exists
+#      debug:
+#        msg: "{{ item }}:"
+      parted:
+        device: "{{ item['device_'] }}"
+        number: "{{ item['number_'] }}"
+        part_end: "{{ item['size_'] }}"
+        status: present
+      loop: "{{ pvgdata_[0]['volumes_'] }}"
+      when: ansible_devices['sdb']
+

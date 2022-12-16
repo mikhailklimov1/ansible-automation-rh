@@ -1,0 +1,48 @@
+---
+- hosts: ansible1,ansible2
+  vars_files: vars/917_vars.yaml
+  tasks:
+
+    - name: Create a partion if /dev/sdb exists
+      parted:
+        device: "{{ item['device_'] }}"
+        number: "{{ item['number_'] }}"
+        part_end: "{{ item['size_'] }}"
+        state: present
+      loop: "{{ pvolumes_ }}"
+      when: ansible_devices['sdb']
+
+    - name: Create VG
+      lvg:
+        pesize: 32M
+        pvs: "{{ item['device_'] }}"
+        vg: "{{ item['vgname_'] }}"
+        state: present
+      loop: "{{ vgdata_ }}"
+      when: ansible_devices['sdb']
+      
+    - name: Create LVs
+      lvol:
+        lv: "{{ item['lvname_'] }}"
+        size: "{{ item['lvsize_'] }}"
+        state: present
+        vg: "{{ item['vgname_'] }}"
+      loop: "{{ lvms_ }}"
+      when: ansible_devices['sdb']
+
+    - name: Create filesystem
+      filesystem:
+        dev: "/dev/{{ item['vgname_'] }}/{{ item['lvname_'] }}"
+        fstype: "{{ item['fs_'] }}"
+        state: present
+      loop: "{{ lvms_ }}"
+      when: ansible_devices['sdb']
+
+    - name: Mount LVs
+      mount:
+        fstype: "{{ item['fs_'] }}"
+        path: "{{ item['mountpoint_'] }}"
+        src: "/dev/{{ item['vgname_'] }}/{{ item['lvname_'] }}"
+        state: mounted
+      loop: "{{ lvms_ }}"
+      when: ansible_devices['sdb']

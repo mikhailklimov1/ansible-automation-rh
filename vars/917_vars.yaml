@@ -1,0 +1,25 @@
+---
+pvolumes_:
+
+  - device_: /dev/sdb
+    number_: 1
+    size_: 2GB
+
+vgdata_:
+
+  - vgname_: content_vg
+    device_: /dev/sdb1
+
+lvms_:
+
+  - lvname_: web_lv
+    vgname_: content_vg
+    lvsize_: 256M
+    mountpoint_: /var/www
+    fs_: ext4
+
+  - lvname_: filesrv_lv
+    vgname_: content_vg
+    lvsize_: 1G
+    mountpoint_: /data
+    fs_: ext4
