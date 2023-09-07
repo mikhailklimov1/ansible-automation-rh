@@ -1,0 +1,18 @@
+---
+- name: Deploy an apache web server
+  hosts: servers
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_package: python3-PyMySQL
+    rule: http
+  tasks:
+    - name: Install web server
+      yum:
+        name: 
+          - "{{ web_pkg}}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_package }}"
+        state: latest
