@@ -4,10 +4,7 @@
   vars:
     web_pkg: httpd
     firewall_pkg: firewalld
-    web_service: httpd
-    firewall_service: firewalld
     python_package: python3-PyMySQL
-    rule: http
   tasks:
     - name: Install web server
       yum:
